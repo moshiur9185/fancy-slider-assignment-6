@@ -15,8 +15,8 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-    if (images.length == 0) {
-        displayError('Your search image not found...');
+    if (images.length === 0) {
+        displayError('Your search image not found...!');
 
     } else {
         imagesArea.style.display = 'block';
@@ -24,11 +24,12 @@ const showImages = (images) => {
         // show gallery title
         galleryHeader.style.display = 'flex';
         images.forEach(image => {
+            displayError('');
             let div = document.createElement('div');
             div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
             div.innerHTML = `<img class="img-fluid img-thumbnail" onclick = selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
             gallery.appendChild(div);
-            displayError('');
+
         })
 
     }
@@ -86,7 +87,6 @@ const createSlider = () => {
     // hide image aria
     imagesArea.style.display = 'none';
     const duration = document.getElementById('duration').value || 1000;
-
     if (duration < 0) {
         alert('Please enter positive time')
     } else {
@@ -150,8 +150,8 @@ const toggleSpinner = (show) => {
             spinner.classList.add('d-none');
         }
     }
-    // error message
-const displayError = error => {
-    const errorTag = document.getElementById('error-message');
-    errorTag.innerText = error;
+    // not found message
+const displayError = notFound => {
+    const notFoundTag = document.getElementById('notFound-message');
+    notFoundTag.innerText = notFound;
 }
