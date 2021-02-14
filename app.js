@@ -15,18 +15,24 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-    imagesArea.style.display = 'block';
-    gallery.innerHTML = '';
-    // show gallery title
-    galleryHeader.style.display = 'flex';
-    images.forEach(image => {
-        let div = document.createElement('div');
-        div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick = selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-        gallery.appendChild(div)
-        toggleSpinner(false);
-    })
+    if (images.length == 0) {
+        displayError('Your search image not found...');
 
+    } else {
+        imagesArea.style.display = 'block';
+        gallery.innerHTML = '';
+        // show gallery title
+        galleryHeader.style.display = 'flex';
+        images.forEach(image => {
+            let div = document.createElement('div');
+            div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
+            div.innerHTML = `<img class="img-fluid img-thumbnail" onclick = selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+            gallery.appendChild(div);
+            displayError('');
+        })
+
+    }
+    toggleSpinner(false);
 }
 
 //Enter button press search
@@ -80,14 +86,18 @@ const createSlider = () => {
     // hide image aria
     imagesArea.style.display = 'none';
     const duration = document.getElementById('duration').value || 1000;
-    sliders.forEach(slide => {
-        let item = document.createElement('div')
-        item.className = "slider-item";
-        item.innerHTML = `<img class="w-100"
-    src="${slide}"
-    alt="">`;
-        sliderContainer.appendChild(item)
-    })
+
+    if (duration < 0) {
+        alert('Please enter positive time')
+    } else {
+        sliders.forEach(slide => {
+            let item = document.createElement('div')
+            item.className = "slider-item";
+            item.innerHTML = `<img class="w-100" src="${slide}" alt="">`;
+            sliderContainer.appendChild(item)
+        })
+    }
+
     changeSlide(0)
     timer = setInterval(function() {
         slideIndex++;
@@ -133,10 +143,15 @@ sliderBtn.addEventListener('click', function() {
     createSlider()
 })
 const toggleSpinner = (show) => {
-    const spinner = document.getElementById('loading-spinner');
-    if (show) {
-        spinner.classList.remove('d-none');
-    } else {
-        spinner.classList.add('d-none');
+        const spinner = document.getElementById('loading-spinner');
+        if (show) {
+            spinner.classList.remove('d-none');
+        } else {
+            spinner.classList.add('d-none');
+        }
     }
+    // error message
+const displayError = error => {
+    const errorTag = document.getElementById('error-message');
+    errorTag.innerText = error;
 }
