@@ -22,13 +22,24 @@ const showImages = (images) => {
     images.forEach(image => {
         let div = document.createElement('div');
         div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick = selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
         gallery.appendChild(div)
+        toggleSpinner(false);
     })
 
 }
 
+//Enter button press search
+document.getElementById("search")
+    .addEventListener("keypress", function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById("search-btn").click();
+        }
+    });
+
+
 const getImages = (query) => {
+    toggleSpinner(true);
     fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
         .then(response => response.json())
         .then(data => showImages(data.hits))
@@ -38,13 +49,13 @@ const getImages = (query) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
     let element = event.target;
-    element.classList.add('added');
+    element.classList.toggle('added');
 
     let item = sliders.indexOf(img);
     if (item === -1) {
         sliders.push(img);
     } else {
-        alert('Hey, Already added !')
+        sliders.pop(img);
     }
 }
 
@@ -121,3 +132,11 @@ searchBtn.addEventListener('click', function() {
 sliderBtn.addEventListener('click', function() {
     createSlider()
 })
+const toggleSpinner = (show) => {
+    const spinner = document.getElementById('loading-spinner');
+    if (show) {
+        spinner.classList.remove('d-none');
+    } else {
+        spinner.classList.add('d-none');
+    }
+}
