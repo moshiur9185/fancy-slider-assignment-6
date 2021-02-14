@@ -88,7 +88,7 @@ const createSlider = () => {
     imagesArea.style.display = 'none';
     const duration = document.getElementById('duration').value || 1000;
     if (duration < 0) {
-        alert('Please enter positive time')
+        alert('Please Enter Positive Duration Time..')
     } else {
         sliders.forEach(slide => {
             let item = document.createElement('div')
